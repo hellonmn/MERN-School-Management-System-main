@@ -93,7 +93,7 @@ const SideBar = ({ sidebarOpen = true }) => {
                 className={`
                     group flex gap-2 items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200
                     ${item.isActive 
-                        ? 'bg-blue-100' 
+                        ? 'bg-blue-100 text-blue-700 shadow-sm' 
                         : item.isLogout
                             ? 'text-red-600 hover:bg-red-50 hover:text-red-700'
                             : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
@@ -111,7 +111,6 @@ const SideBar = ({ sidebarOpen = true }) => {
                                 ? 'text-red-500 group-hover:text-red-600'
                                 : 'text-gray-400 group-hover:text-gray-600'
                         }
-                        ${sidebarOpen ? 'mr-3' : ''}
                     `}
                 />
                 
@@ -156,16 +155,15 @@ const SideBar = ({ sidebarOpen = true }) => {
                 ))}
             </div>
            
-            
             {/* Help Section - only show when sidebar is open */}
             {sidebarOpen && (
-                <div className="mt-4 px-3">
-                    <div className="flex flex-col gap-3 bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <div className="mt-4 px-3 pb-4">
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
                         <h4 className="text-sm font-semibold text-gray-900 mb-2">Need Help?</h4>
                         <p className="text-xs text-gray-600 mb-3">
                             Check our documentation or contact support for assistance.
                         </p>
-                        <button className="w-full text-xs bg-gray-900 text-white py-2 px-3 rounded-md hover:bg-gray-800 transition-colors">
+                        <button className="w-full text-xs bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-3 rounded-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-sm">
                             Contact Support
                         </button>
                     </div>
