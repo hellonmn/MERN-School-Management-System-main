@@ -50,73 +50,7 @@ import AddClass from "./classRelated/AddClass";
 import ClassDetails from "./classRelated/ClassDetails";
 import ShowClasses from "./classRelated/ShowClasses";
 import AccountMenu from "../../components/AccountMenu";
-
-// Mobile Bottom Navigation Component
-const MobileBottomNavigation = ({ location }) => {
-  const navigationItems = [
-    {
-      name: 'Home',
-      path: '/',
-      icon: Home,
-      isActive: location.pathname === '/' || location.pathname === '/Admin/dashboard'
-    },
-    {
-      name: 'Students',
-      path: '/Admin/students',
-      icon: Users,
-      isActive: location.pathname.startsWith('/Admin/students')
-    },
-    {
-      name: 'Teachers',
-      path: '/Admin/teachers',
-      icon: GraduationCap,
-      isActive: location.pathname.startsWith('/Admin/teachers')
-    },
-    {
-      name: 'Classes',
-      path: '/Admin/classes',
-      icon: School,
-      isActive: location.pathname.startsWith('/Admin/classes')
-    },
-    {
-      name: 'More',
-      path: '/Admin/profile',
-      icon: User,
-      isActive: location.pathname.startsWith('/Admin/profile') || 
-                location.pathname.startsWith('/Admin/subjects') || 
-                location.pathname.startsWith('/Admin/notices') || 
-                location.pathname.startsWith('/Admin/complains')
-    }
-  ];
-
-  return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-2 py-1 safe-area-pb">
-      <div className="flex justify-around items-center">
-        {navigationItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <a
-              key={item.name}
-              href={item.path}
-              className={`flex flex-col items-center justify-center min-w-0 flex-1 px-2 py-2 rounded-lg transition-all duration-200 ${
-                item.isActive 
-                  ? 'text-blue-600' 
-                  : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              <Icon className={`w-5 h-5 mb-1 ${item.isActive ? 'text-blue-600' : 'text-gray-400'}`} />
-              <span className={`text-xs font-medium truncate ${
-                item.isActive ? 'text-blue-600' : 'text-gray-400'
-              }`}>
-                {item.name}
-              </span>
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+import AdminBottomNav from '../../components/AdminBottomNav';
 
 // Mobile Header Component
 const MobileHeader = ({ title, onMenuClick }) => {
@@ -278,73 +212,14 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-50 flex overflow-hidden">
-      {/* Mobile backdrop */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
-          onClick={() => setMobileMenuOpen(false)}
-        ></div>
-      )}
-
-      {/* Sidebar - Desktop Only */}
-      <div
-        className={`h-screen top-0
-                fixed left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
-                lg:relative lg:translate-x-0
-                ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-                ${sidebarOpen ? "lg:block" : "lg:w-16"}
-            `}
-      >
-        {/* Sidebar Header */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-          <div
-            className={`flex items-center gap-2 ${
-              sidebarOpen ? "block" : "lg:hidden"
-            }`}
-          >
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <School className="w-5 h-5 text-white" />
-            </div>
-            <span className="ml-3 text-lg font-semibold text-gray-900">
-              CCA Admin
-            </span>
-          </div>
-
-          {/* Desktop sidebar toggle */}
-          <button
-            onClick={toggleSidebar}
-            className="-ml-4 hidden lg:flex rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors p-1.5"
-          >
-            {sidebarOpen ? (
-              <ChevronLeft className="w-5 h-5" />
-            ) : (
-              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg">
-                <School className="w-5 h-5 text-white" />
-              </div>
-            )}
-          </button>
-
-          {/* Mobile close button */}
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Sidebar Content */}
-        <div className="flex flex-col h-full">
-          <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto">
-            <SideBar sidebarOpen={sidebarOpen} />
-          </nav>
-        </div>
-      </div>
-
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar for desktop */}
+      <aside className="hidden lg:block w-64 bg-white border-r border-gray-200">
+        <SideBar />
+      </aside>
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile Header */}
+      <main className="flex-1 flex flex-col">
+        {/* Mobile header, etc. */}
         <MobileHeader 
           title={getPageTitle()}
           onMenuClick={() => setMobileMenuOpen(true)}
@@ -499,10 +374,18 @@ const AdminDashboard = () => {
             </Routes>
           </div>
         </main>
-      </div>
 
-      {/* Mobile Bottom Navigation */}
-      <MobileBottomNavigation location={location} />
+        {/* Admin Bottom Navigation for mobile */}
+        <AdminBottomNav />
+      </main>
+
+      {/* Mobile backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        ></div>
+      )}
 
       {/* Mobile Menu Overlay */}
       <MobileMenuOverlay 
